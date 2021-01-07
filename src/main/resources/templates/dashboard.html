@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf 예제</title>
+</head>
+<body>
+<h1>myFileViewer</h1>
+
+<a href="${pDir}">parent directory</a>
+
+<table>
+    <thead>
+        <tr>
+            <th> 파일이름 </th>
+            <th> 파일 사이즈 </th>
+            <th> 최신 수정 일자 </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="list : ${fileInfo}">
+            <td th:text="${list.getFileName()}">
+                <!-- <a href="/dashboard"></a> -->
+            </td>
+            <td th:text="${list.getFileSize()}"></td>
+            <td th:text="${list.getLastMoified()}"></td>
+        </tr>
+    </tbody>
+
+</table>
+
+</body>
+</html>
