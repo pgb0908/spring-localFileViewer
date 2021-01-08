@@ -11,7 +11,7 @@ public class DashBoardControllerTest {
     ArrayList<FileInfo> fileInfoList;
     String defaultFilePath = "C:/Users/Tmax/test";
     String curDir;
-    String newDir;
+    String newURL;
     String startStr = "/dashboard";
 
     @Test
@@ -20,8 +20,22 @@ public class DashBoardControllerTest {
         curDir = "/dashboard/a";
 
         // newDir = 현주 주소 - /dashboard/
-        newDir = curDir.substring(startStr.length());
-        System.out.println(newDir);
+        newURL = curDir.substring(startStr.length());
+        System.out.println("현재주소 : " + newURL);
+
+
+        // 마지막 / 위치
+        int last = 0;
+        for(int i = curDir.length()-1; i >= 0; i--){
+            if('/' == curDir.charAt(i)){
+                last = i;
+                break;
+            }
+        }
+        System.out.println(last);
+        System.out.println("lastURL : " + curDir.substring(0, last));
+        //String parentURL = newURL.substring()
+
     }
 
 

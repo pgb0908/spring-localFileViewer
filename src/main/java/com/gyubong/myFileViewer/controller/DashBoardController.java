@@ -16,32 +16,54 @@ import java.util.Optional;
 @Controller
 public class DashBoardController {
 
+    @GetMapping("/hi")
+    public String hi() {
+        return "hi";
+    }
+
     @GetMapping("/dashboard/*")
     public String dashboardPage(HttpServletRequest request, Model model) {
 
         // 파일에 출력할 리스트 뽑기
         ArrayList<FileInfo> fileInfoList;
-        String curDir;
-        String newDir;
-        String startStr = "/dashboard";
+        String curURL = "";
+        String newURL = "";
+        String newFilePath = "";
+        String startURL = "/dashboard";
         String defaultFilePath = "C:/Users/Tmax/test";
 
         // 현재 url 주소
-        curDir = request.getRequestURI();
+        curURL = request.getRequestURI();
 
         // newDir = 현주 주소 - /dashboard/
-        newDir = curDir.substring(startStr.length());
+        newURL = curURL.substring(startURL.length());
+        // parentURL
+        String parentURL = getParentURL(curURL);
 
         // defaultFilePath + newDir
-        newDir = defaultFilePath + newDir;
+        newFilePath = defaultFilePath + newURL;
 
-        File file = new File(newDir);
+
+
+        File file = new File(newFilePath);
         fileInfoList = getFileInfoListing(file);
 
         model.addAttribute("fileInfo", fileInfoList);
-        model.addAttribute("pDir", file.getParent());
+        model.addAttribute("pDir", parentURL);
 
         return "dashboard";
+    }
+
+    private String getParentURL(String curURL) {
+        int last = 0;
+        for(int i = curURL.length()-1; i >= 0; i--){
+            if('/' == curURL.charAt(i)){
+                last = i;
+                break;
+            }
+        }
+
+        return curURL.substring(0, last);
     }
 
 
