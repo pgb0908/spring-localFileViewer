@@ -4,23 +4,38 @@ import com.gyubong.myFileViewer.domain.FileInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 @Controller
 public class DashBoardController {
 
-    @GetMapping("/dashboard")
-    public String dashboardPage(Model model) {
+    @GetMapping("/dashboard/*")
+    public String dashboardPage(HttpServletRequest request, Model model) {
 
         // 파일에 출력할 리스트 뽑기
         ArrayList<FileInfo> fileInfoList;
-        String filePath;
+        String curDir;
+        String newDir;
+        String startStr = "/dashboard";
+        String defaultFilePath = "C:/Users/Tmax/test";
 
-        filePath = "C:/Users/Tmax/test";
-        File file = new File(filePath);
+        // 현재 url 주소
+        curDir = request.getRequestURI();
+
+        // newDir = 현주 주소 - /dashboard/
+        newDir = curDir.substring(startStr.length());
+
+        // defaultFilePath + newDir
+        newDir = defaultFilePath + newDir;
+
+        File file = new File(newDir);
         fileInfoList = getFileInfoListing(file);
 
         model.addAttribute("fileInfo", fileInfoList);
