@@ -75,7 +75,9 @@ public class DashBoardController {
             }
         }
 
-        return curURL.substring(0, last);
+        String result = curURL.substring(0, last);
+
+        return result.isEmpty()? "": result+"/";
     }
 
 
