@@ -9,7 +9,7 @@
 
 <a th:text="${pDir}">parent directory</a>
 
-<table>
+<table border="1">
 
     <thead>
         <tr>
@@ -20,8 +20,10 @@
     </thead>
     <tbody>
         <tr th:each="list : ${fileInfo}">
-            <td th:text="${list.getFileName()}">
-                <!-- <a href="/dashboard"></a> -->
+            <td>
+                <a th:href="${list.getFileName()}">
+                    <span th:text="${list.getFileName()}"></span>
+                </a>
             </td>
             <td th:text="${list.getFileSize()}"></td>
             <td th:text="${list.getLastMoified()}"></td>

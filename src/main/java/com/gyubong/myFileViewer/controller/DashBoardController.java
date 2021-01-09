@@ -21,8 +21,9 @@ public class DashBoardController {
         return "hi";
     }
 
-    @GetMapping("/dashboard/*")
+    @GetMapping("/dashboard/**")
     public String dashboardPage(HttpServletRequest request, Model model) {
+        System.out.println("init!!!");
 
         // 파일에 출력할 리스트 뽑기
         ArrayList<FileInfo> fileInfoList;
@@ -44,22 +45,33 @@ public class DashBoardController {
         newFilePath = defaultFilePath + newURL;
 
 
-
         File file = new File(newFilePath);
+
+        // 해당 디렉토리가 디펙토리인지 파일인지 구분해서
+        // 디렉토리이면 이동하고 파일이면 다운받을 수 있다
+
+        // 1 디렉토리인 경우 --> 이동
         fileInfoList = getFileInfoListing(file);
 
         model.addAttribute("fileInfo", fileInfoList);
         model.addAttribute("pDir", parentURL);
+
+        // 2 파일인경우 --> 다운로드
 
         return "dashboard";
     }
 
     private String getParentURL(String curURL) {
         int last = 0;
+        int check = 1;
         for(int i = curURL.length()-1; i >= 0; i--){
             if('/' == curURL.charAt(i)){
-                last = i;
-                break;
+                if(check == 0){
+                    last = i;
+                    break;
+                }
+                check--;
+
             }
         }
 
@@ -77,7 +89,7 @@ public class DashBoardController {
         for (File file : files) {
             FileInfo fileInfo = new FileInfo();
 
-            fileInfo.setFileName(file.getName());
+            fileInfo.setFileName(file.getName() + "/");
             fileInfo.setFileSize(file.length());
             fileInfo.setLastMoified(file.lastModified());
             fileInfo.setParentFile(file.getParentFile());
@@ -86,7 +98,7 @@ public class DashBoardController {
             fileInfoList.add(fileInfo);
         }
 
-        Collections.sort(fileInfoList, (a, b) -> (int) (long) a.getFileSize() -  (int) (long) b.getFileSize());
+        //Collections.sort(fileInfoList, (a, b) -> (int) (long) a.getFileSize() -  (int) (long) b.getFileSize());
 
         return fileInfoList;
     }
